@@ -2,148 +2,33 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOSS PANEL — Управление Банком</title>
-    
+    <title>BOSS PANEL — Synchronized</title>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-
     <style>
-        :root {
-            --red: #ff3b30;
-            --green: #34c759;
-            --blue: #0077ff;
-            --yellow: #ffd60a;
-            --bg: #000000;
-            --card: #1c1c1e;
-            --input-bg: #2c2c2e;
-            --text: #ffffff;
-            --text-sec: #8e8e93;
-        }
-
-        body {
-            font-family: -apple-system, system-ui, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 20px;
-            padding-bottom: 50px;
-        }
-
-        h1 { color: var(--blue); font-size: 28px; margin-bottom: 5px; }
-        .subtitle { color: var(--text-sec); margin-bottom: 30px; font-size: 14px; }
-
-        /* Стили рапортов */
-        #reports-list { margin-bottom: 30px; }
-        .report-box {
-            background: var(--yellow);
-            color: #000;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            position: relative;
-            animation: fadeIn 0.3s ease;
-        }
-        .report-box b { display: block; font-size: 16px; }
-        .report-box small { opacity: 0.7; }
-        .del-report {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.1);
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        /* Карточка клиента */
-        .client-card {
-            background: var(--card);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid #333;
-        }
-
-        .client-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-
-        .client-name { font-size: 20px; font-weight: bold; margin: 0; }
-        .status-badge {
-            font-size: 12px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-        .status-ok { background: rgba(52, 199, 89, 0.2); color: var(--green); }
-        .status-blocked { background: rgba(255, 59, 48, 0.2); color: var(--red); }
-
-        /* Сетка полей */
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .field-group { margin-bottom: 10px; }
-        label { display: block; font-size: 11px; color: var(--text-sec); margin-bottom: 4px; text-transform: uppercase; }
-        
-        input {
-            width: 100%;
-            background: var(--input-bg);
-            border: 1px solid #3d3d3f;
-            color: #fff;
-            padding: 10px;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 15px;
-        }
-        input:focus { border-color: var(--blue); outline: none; }
-
-        /* Кнопки */
-        button {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 14px;
-        }
-
-        .btn-save { background: var(--blue); color: #fff; margin-top: 15px; }
-        .btn-block { background: transparent; border: 1px solid var(--text-sec); color: var(--text); margin-top: 10px; }
-        .btn-delete { background: transparent; color: var(--red); margin-top: 20px; font-size: 12px; opacity: 0.6; }
-        
-        button:active { transform: scale(0.98); }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        :root { --red: #ff3b30; --green: #34c759; --blue: #007aff; --bg: #000; --card: #1c1c1e; --text: #fff; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
+        .client-card { background: var(--card); border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 1px solid #333; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+        label { display: block; font-size: 11px; color: #8e8e93; margin-bottom: 4px; text-transform: uppercase; }
+        input { width: 100%; background: #2c2c2e; border: 1px solid #3d3d3f; color: #fff; padding: 10px; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .btn-save { background: var(--blue); color: #fff; }
+        .btn-block { background: transparent; border: 1px solid var(--red); color: var(--red); }
+        .btn-unblock { background: transparent; border: 1px solid var(--green); color: var(--green); }
+        .report-box { background: #ffd60a; color: #000; padding: 15px; border-radius: 12px; margin-bottom: 20px; position: relative; }
+        .del-report { position: absolute; top: 10px; right: 10px; cursor: pointer; font-weight: bold; }
+        h1 { color: var(--blue); }
     </style>
 </head>
 <body>
 
-    <h1>👑 ПАНЕЛЬ ВЛАДЕЛЬЦА</h1>
-    <p class="subtitle">Полный доступ к системе КОТОБАНК</p>
-
+    <h1>👑 BOSS PANEL (Sync Mode)</h1>
     <div id="reports-list"></div>
-
-    <hr style="border: 0.5px solid #333; margin: 25px 0;">
-
-    <div id="clients-admin">Загрузка данных...</div>
+    <hr style="border: 0.5px solid #333; margin: 20px 0;">
+    <div id="clients-admin">Загрузка...</div>
 
     <script>
-        // --- КОНФИГУРАЦИЯ FIREBASE ---
         const firebaseConfig = {
             apiKey: "AIzaSyA3J7KnUgxUHZigwRKmndm7xyxJeeLCrxg",
             databaseURL: "https://webapp-b7149-default-rtdb.europe-west1.firebasedatabase.app",
@@ -152,117 +37,91 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // 1. ПОЛУЧЕНИЕ РАПОРТОВ
+        // 1. Рапорты
         db.ref('reports').on('value', snap => {
-            const container = document.getElementById('reports-list');
-            container.innerHTML = "<h3>🔔 Запросы сотрудников</h3>";
-            if (!snap.exists()) {
-                container.innerHTML += "<p style='color:gray; font-size:14px;'>Новых рапортов нет</p>";
-                return;
-            }
-            
+            const div = document.getElementById('reports-list');
+            div.innerHTML = "<h3>🔔 Рапорты</h3>";
             snap.forEach(child => {
                 const r = child.val();
-                container.innerHTML += `
-                    <div class="report-box">
-                        <div class="del-report" onclick="db.ref('reports').child('${child.key}').remove()">✕</div>
-                        <b>${r.staff}</b>
-                        <small>Для клиента: ${r.client}</small>
-                        <p style="margin:8px 0 0 0">👉 ${r.desc}</p>
-                    </div>`;
+                div.innerHTML += `<div class="report-box">
+                    <span class="del-report" onclick="db.ref('reports').child('${child.key}').remove()">✕</span>
+                    <b>${r.staff}</b>: ${r.desc}<br><small>Клиент: ${r.client}</small>
+                </div>`;
             });
         });
 
-        // 2. ПОЛУЧЕНИЕ И УПРАВЛЕНИЕ КЛИЕНТАМИ
+        // 2. Управление клиентами
         db.ref('clients').on('value', snap => {
             const list = document.getElementById('clients-admin');
-            list.innerHTML = "<h3>👥 Управление счетами</h3>";
+            list.innerHTML = "<h3>👥 Список клиентов</h3>";
             
-            if (!snap.exists()) {
-                list.innerHTML += "<p style='color:gray'>В базе пока нет клиентов</p>";
-                return;
-            }
-
             snap.forEach(child => {
                 const c = child.val();
                 const id = child.key;
                 const card = document.createElement('div');
                 card.className = 'client-card';
                 
-                card.innerHTML = `
-                    <div class="client-header">
-                        <div>
-                            <p class="client-name">${c.name || 'Без имени'}</p>
-                            <code style="color:gray; font-size:10px;">ID: ${id}</code>
-                        </div>
-                        <span class="status-badge ${c.blocked ? 'status-blocked' : 'status-ok'}">
-                            ${c.blocked ? 'Заблокирован' : 'Активен'}
-                        </span>
-                    </div>
+                // Проверяем статус заморозки (frozen в твоем банке)
+                const isFrozen = c.frozen === true;
 
+                card.innerHTML = `
+                    <div style="display:flex; justify-content:space-between;">
+                        <b>${c.name || 'Без имени'}</b>
+                        <span style="color:${isFrozen ? 'red' : 'green'}">${isFrozen ? 'БЛОК' : 'OK'}</span>
+                    </div>
+                    
                     <div class="grid">
-                        <div class="field-group">
+                        <div>
                             <label>Баланс (₽)</label>
                             <input type="number" id="bal-${id}" value="${c.balance || 0}">
                         </div>
-                        <div class="field-group">
+                        <div>
                             <label>Бонусы</label>
                             <input type="number" id="bon-${id}" value="${c.bonuses || 0}">
                         </div>
-                        <div class="field-group">
-                            <label>Кредитный лимит</label>
-                            <input type="number" id="cred-${id}" value="${c.credit_limit || 0}">
-                        </div>
-                        <div class="field-group">
+                        <div>
                             <label>🔐 ПИН-КОД</label>
-                            <input type="text" id="pin-${id}" value="${c.pin || ''}" maxlength="4">
+                            <input type="text" id="pin-${id}" value="${c.clientPin || ''}" maxlength="4">
+                        </div>
+                        <div>
+                            <label>Траты (spentMonth)</label>
+                            <input type="number" id="spent-${id}" value="${c.spentMonth || 0}">
                         </div>
                     </div>
 
-                    <div class="field-group">
-                        <label>Номер телефона</label>
-                        <input type="text" id="phone-${id}" value="${c.phone || ''}">
-                    </div>
-
-                    <button class="btn-save" onclick="saveClient('${id}')">СОХРАНИТЬ ВСЁ</button>
+                    <button class="btn-save" onclick="saveClient('${id}')">СОХРАНИТЬ ИЗМЕНЕНИЯ</button>
                     
-                    <button class="btn-block" onclick="toggleBlock('${id}', ${c.blocked})">
-                        ${c.blocked ? 'Разблокировать карту' : 'Заблокировать карту'}
+                    <button class="${isFrozen ? 'btn-unblock' : 'btn-block'}" onclick="toggleLock('${id}', ${isFrozen})">
+                        ${isFrozen ? 'РАЗБЛОКИРОВАТЬ КАРТУ' : 'ЗАБЛОКИРОВАТЬ КАРТУ'}
                     </button>
 
-                    <button class="btn-delete" onclick="deleteClient('${id}', '${c.name}')">
-                        🗑 УДАЛИТЬ КЛИЕНТА НАВСЕГДА
-                    </button>
+                    <button style="color:gray; font-size:10px; background:none; border:none; margin-top:15px;" onclick="deleteClient('${id}')">Удалить аккаунт</button>
                 `;
                 list.appendChild(card);
             });
         });
 
-        // ФУНКЦИЯ СОХРАНЕНИЯ
         function saveClient(id) {
+            // Сохраняем ровно те ключи, которые ищет твой Онлайн Банк
             const updates = {
                 balance: parseFloat(document.getElementById(`bal-${id}`).value) || 0,
                 bonuses: parseFloat(document.getElementById(`bon-${id}`).value) || 0,
-                credit_limit: parseFloat(document.getElementById(`cred-${id}`).value) || 0,
-                pin: document.getElementById(`pin-${id}`).value,
-                phone: document.getElementById(`phone-${id}`).value
+                clientPin: document.getElementById(`pin-${id}`).value,
+                spentMonth: parseFloat(document.getElementById(`spent-${id}`).value) || 0
             };
 
             db.ref('clients').child(id).update(updates)
-                .then(() => alert("✅ Данные сохранены"))
+                .then(() => alert("✅ Данные в банке обновлены!"))
                 .catch(err => alert("Ошибка: " + err));
         }
 
-        // ФУНКЦИЯ БЛОКИРОВКИ
-        function toggleBlock(id, isBlocked) {
-            db.ref('clients').child(id).update({ blocked: !isBlocked });
+        function toggleLock(id, currentStatus) {
+            // Используем frozen, как в твоем коде
+            db.ref('clients').child(id).update({ frozen: !currentStatus });
         }
 
-        // ФУНКЦИЯ УДАЛЕНИЯ
-        function deleteClient(id, name) {
-            if (confirm(`Вы точно хотите УДАЛИТЬ клиента ${name}?\nДанные будут стерты навсегда!`)) {
-                db.ref('clients').child(id).remove();
-            }
+        function deleteClient(id) {
+            if (confirm("Удалить навсегда?")) db.ref('clients').child(id).remove();
         }
     </script>
 </body>
